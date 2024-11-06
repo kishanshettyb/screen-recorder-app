@@ -76,6 +76,14 @@ export default function RootLayout() {
             headerRight: () => <ThemeToggle />,
           }}
         />
+        <Stack.Screen
+          name="storage"
+          options={{
+            title: "",
+            headerLeft: () => <Logo />,
+            headerRight: () => <ThemeToggle />,
+          }}
+        />
       </Stack>
       <PortalHost />
     </ThemeProvider>
