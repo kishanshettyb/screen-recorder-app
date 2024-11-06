@@ -2,6 +2,9 @@ import React, { FunctionComponent } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Feather from "@expo/vector-icons/Feather";
 import { useColorScheme } from "nativewind";
+import DiskDetails from "./DiskDetails";
+import { Link } from "expo-router";
+
 const Banner: FunctionComponent = () => {
   const { colorScheme } = useColorScheme();
 
@@ -28,14 +31,18 @@ const Banner: FunctionComponent = () => {
             />
             <Text className="text-[8px] text-neutral-500 mt-2">Camera</Text>
           </View>
-          <TouchableOpacity className="w-1/2  flex-1 rounded-2xl h-[70px] border shadow-2xl bg-slate-50 dark:bg-neutral-900 border-slate-100 dark:border-neutral-800 p-2 flex justify-center items-center">
-            <Feather
-              name="image"
-              size={24}
-              color={colorScheme === "dark" ? "#fff" : "#000"}
-            />
-            <Text className="text-[8px] text-neutral-500 mt-2">Screenshot</Text>
-          </TouchableOpacity>
+          <Link asChild href="../app/screenshot">
+            <TouchableOpacity className="w-1/2  flex-1 rounded-2xl h-[70px] border shadow-2xl bg-slate-50 dark:bg-neutral-900 border-slate-100 dark:border-neutral-800 p-2 flex justify-center items-center">
+              <Feather
+                name="image"
+                size={24}
+                color={colorScheme === "dark" ? "#fff" : "#000"}
+              />
+              <Text className="text-[8px] text-neutral-500 mt-2">
+                Screenshotz
+              </Text>
+            </TouchableOpacity>
+          </Link>
         </View>
         <View className="flex flex-row gap-2 ">
           <View className="w-1/2 flex-1 rounded-2xl h-[70px] border shadow-2xl  bg-slate-50 dark:bg-neutral-900 border-slate-100 dark:border-neutral-800 p-2 flex justify-center items-center">
