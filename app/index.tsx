@@ -1,11 +1,13 @@
 import * as React from "react";
+import { View } from "react-native";
 import Banner from "~/components/Banner";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import WelcomeTitle from "~/components/WelcomeTitle";
 
 export default function Screen() {
-  return (
-    <GestureHandlerRootView className="flex-1 justify-start  gap-5 p-4 bg-secondary/30">
-      <Banner />
-    </GestureHandlerRootView>
-  );
+	return (
+		<View className="justify-start flex-1 gap-5 p-4 bg-slate-100 dark:bg-neutral-950">
+			<WelcomeTitle />
+			<Banner />
+		</View>
+	);
 }
