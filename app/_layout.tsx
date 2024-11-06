@@ -77,7 +77,7 @@ export default function RootLayout() {
           }}
         />
         <Stack.Screen
-          name="screenshot"
+          name="storage"
           options={{
             title: "",
             headerLeft: () => <Logo />,
@@ -85,7 +85,6 @@ export default function RootLayout() {
           }}
         />
       </Stack>
-
       <PortalHost />
     </ThemeProvider>
   );
