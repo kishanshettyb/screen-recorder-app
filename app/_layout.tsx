@@ -74,6 +74,26 @@ export default function RootLayout() {
         />
 
         <Stack.Screen
+          name="(screens)/player"
+          options={{
+            headerShown: true,
+            title: "player",
+            headerShadowVisible: false,
+            headerTransparent: true,
+            headerStyle: {
+              backgroundColor: "transparent",
+              shadowColor: "transparent",
+            },
+            headerTitleAlign: "center",
+            headerTitleStyle: {
+              color: "#fff",
+            },
+            headerTintColor: "#fff",
+            headerBackTitleVisible: false,
+            headerBackButtonMenuEnabled: true,
+          }}
+        />
+        <Stack.Screen
           name="(screens)/storage"
           options={{
             headerShown: true,
