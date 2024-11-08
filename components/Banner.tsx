@@ -119,9 +119,10 @@ const Banner: FunctionComponent = () => {
             style={[
               styles.modalView,
               {
-                backgroundColor: colorScheme === `dark` ? `#404040` : `#fafafa`,
+                backgroundColor: colorScheme === `dark` ? `#262626` : `#fafafa`,
               },
             ]}
+            className="border border-neutral-50 dark:border-neutral-600 shadow-2xl shadow-green-500"
           >
             <View className="flex justify-between items-center flex-row w-full border border-neutral-300 dark:border-neutral-600 border-x-0 border-t-0 p-4">
               <View>
