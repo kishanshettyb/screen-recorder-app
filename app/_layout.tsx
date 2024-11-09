@@ -1,121 +1,100 @@
-import "~/global.css";
+import { SessionProvider } from "./cxt";
+import { Slot } from "expo-router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React, { useState, useRef, useCallback, useEffect } from "react";
+import { View, Text, ScrollView, RefreshControl } from "react-native";
+import NetInfo from "@react-native-community/netinfo";
+// Create a new query client
+const queryClient = new QueryClient();
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Theme, ThemeProvider } from "@react-navigation/native";
-import { SplashScreen, Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import * as React from "react";
-import { Platform } from "react-native";
-import { NAV_THEME } from "~/lib/constants";
-import { useColorScheme } from "~/lib/useColorScheme";
-import { PortalHost } from "@rn-primitives/portal";
-import { setAndroidNavigationBar } from "~/lib/android-navigation-bar";
+// Custom hook to store the previous state
+function usePrevious(value) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+}
 
-const LIGHT_THEME: Theme = {
-  dark: false,
-  colors: NAV_THEME.light,
-};
-const DARK_THEME: Theme = {
-  dark: true,
-  colors: NAV_THEME.dark,
-};
+export default function Root() {
+  const [isConnected, setIsConnected] = useState(true);
+  const [showMessage, setShowMessage] = useState(false);
+  const [messageText, setMessageText] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
+  const prevIsConnected = usePrevious(isConnected);
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from "expo-router";
-
-// Prevent the splash screen from auto-hiding before getting the color scheme.
-SplashScreen.preventAutoHideAsync();
-
-export default function RootLayout() {
-  const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
-  const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
-
-  React.useEffect(() => {
-    (async () => {
-      const theme = await AsyncStorage.getItem("theme");
-      if (Platform.OS === "web") {
-        // Adds the background color to the html element to prevent white background on overscroll.
-        document.documentElement.classList.add("bg-background");
-      }
-      if (!theme) {
-        AsyncStorage.setItem("theme", colorScheme);
-        setIsColorSchemeLoaded(true);
-        return;
-      }
-      const colorTheme = theme === "dark" ? "dark" : "light";
-      if (colorTheme !== colorScheme) {
-        setColorScheme(colorTheme);
-        setAndroidNavigationBar(colorTheme);
-        setIsColorSchemeLoaded(true);
-        return;
-      }
-      setAndroidNavigationBar(colorTheme);
-      setIsColorSchemeLoaded(true);
-    })().finally(() => {
-      SplashScreen.hideAsync();
-    });
+  // Pull to refresh handler
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    // Simulate a reload by resetting the root component
+    setTimeout(() => {
+      // Simulate a full app reload by resetting the root state or root component
+      resetApp();
+      setRefreshing(false);
+    }, 1000); // Simulate a network request or some async task
   }, []);
 
-  if (!isColorSchemeLoaded) {
-    return null;
-  }
+  const resetApp = () => {
+    // A simple way to reset the app without `expo-updates` or external libraries
+    queryClient.clear(); // Clear react-query cache if necessary
+    // Force rerender the root by managing state or reloading the component
+    // Optionally navigate to the root screen to simulate an app reload
+    // Here we are simply unmounting and remounting the Slot
+    setShowMessage(false); // Reset any temporary messages
+  };
+
+  // Monitor network connection
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      setIsConnected(state.isConnected);
+
+      // Check for connection state change
+      if (prevIsConnected === true && state.isConnected === false) {
+        setMessageText("Please check your connection!");
+        setShowMessage(true);
+        const timer = setTimeout(() => {
+          setShowMessage(false);
+        }, 3000);
+        return () => clearTimeout(timer);
+      } else if (prevIsConnected === false && state.isConnected === true) {
+        setMessageText("Back to online");
+        setShowMessage(true);
+        const timer = setTimeout(() => {
+          setShowMessage(false);
+        }, 3000);
+        return () => clearTimeout(timer);
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [isConnected, prevIsConnected]);
 
   return (
-    <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-      <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-      <Stack>
-        <Stack.Screen
-          name="(tabs)"
-          options={{
-            headerShown: false,
-          }}
-        />
-
-        <Stack.Screen
-          name="(screens)/player"
-          options={{
-            headerShown: true,
-            title: "player",
-            headerShadowVisible: false,
-            headerTransparent: true,
-            headerStyle: {
-              backgroundColor: "transparent",
-              shadowColor: "transparent",
-            },
-            headerTitleAlign: "center",
-            headerTitleStyle: {
-              color: "#fff",
-            },
-            headerTintColor: "#fff",
-            headerBackTitleVisible: false,
-            headerBackButtonMenuEnabled: true,
-          }}
-        />
-        <Stack.Screen
-          name="(screens)/storage"
-          options={{
-            headerShown: true,
-            title: "Storage",
-            headerShadowVisible: false,
-            headerTransparent: true,
-            headerStyle: {
-              backgroundColor: "transparent",
-              shadowColor: "transparent",
-            },
-            headerTitleAlign: "center",
-            headerTitleStyle: {
-              color: "#fff",
-            },
-            headerTintColor: "#fff",
-            headerBackTitleVisible: false,
-            headerBackButtonMenuEnabled: true,
-          }}
-        />
-      </Stack>
-
-      <PortalHost />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <SessionProvider>
+        <ScrollView
+          className="flex-1"
+          contentContainerStyle={{ flex: 1 }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          <Slot />
+          {showMessage && (
+            <View className="absolute z-50 items-center justify-center w-full bottom-20">
+              <View
+                className={`w-full h-10 justify-center items-center ${
+                  isConnected ? "bg-green-500" : "bg-red-500"
+                }`}
+              >
+                <Text className="text-sm text-white">{messageText}</Text>
+              </View>
+            </View>
+          )}
+        </ScrollView>
+      </SessionProvider>
+    </QueryClientProvider>
   );
 }
