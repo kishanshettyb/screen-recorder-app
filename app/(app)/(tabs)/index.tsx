@@ -1,4 +1,3 @@
-import * as React from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useSession } from "~/app/cxt";
 import Banner from "~/components/Banner";

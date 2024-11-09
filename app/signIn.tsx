@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import { useState } from "react";
 import { router } from "expo-router";
 import InfoSlider from "~/components/InfoSlider";
@@ -14,6 +14,6 @@ export default function Page() {
       </View>
     );
   } else {
-    return router.replace("/auth");
+    return router.replace("./auth");
   }
 }

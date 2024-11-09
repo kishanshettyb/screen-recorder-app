@@ -2,15 +2,8 @@ import { SessionProvider } from "./cxt";
 import { Slot } from "expo-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  RefreshControl,
-  SafeAreaView,
-} from "react-native";
+import { View, Text, ScrollView, RefreshControl } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 // Create a new query client
 const queryClient = new QueryClient();
 

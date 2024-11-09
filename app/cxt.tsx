@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useStorageState } from "./useStorageState";
 import { router } from "expo-router";
 
@@ -45,13 +45,13 @@ export function SessionProvider(props: React.PropsWithChildren) {
     <AuthContext.Provider
       value={{
         signIn: (data) => {
-          setSession("kkkk");
-          // setSession(data.data.token);
-          router.replace("../(app)");
+          setSession(data.data.token);
+          console.log(data.data.token);
+          router.replace("../(app)/(tabs)");
         },
         signOut: () => {
           setSession(null);
-          router.replace("./signIn");
+          router.replace("/signIn");
         },
         session,
         isLoading,
