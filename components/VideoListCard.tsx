@@ -24,7 +24,7 @@ const VideoListCard: FunctionComponent = () => {
       <Text className="text-xs mb-2 text-neutral-900 dark:text-neutral-400 opacity-40">
         Today
       </Text>
-      <Link asChild href="/(screens)/player">
+      <Link asChild href="/player">
         <TouchableOpacity className="mb-3 shadow-xl shadow-neutral-50 dark:shadow-neutral-900  rounded-2xl flex flex-row justify-between items-center gap-x-4 p-4 border-slate-100  dark:border-neutral-800 border bg-white dark:bg-neutral-950  w-full">
           <View className="w-[90px] h-[100px] rounded-xl  relative  ">
             <Image
@@ -92,7 +92,7 @@ const VideoListCard: FunctionComponent = () => {
       <Text className="text-xs mb-2 text-neutral-900 dark:text-neutral-400 opacity-40">
         Yesterday
       </Text>
-      <Link asChild href="/(screens)/player">
+      <Link asChild href="/player">
         <TouchableOpacity className="mb-3 rounded-2xl shadow-xl shadow-neutral-50 dark:shadow-neutral-900  shadow-xl shadow-neutral-50 dark:shadow-neutral-900  flex flex-row justify-between items-center gap-x-4 p-4 border-slate-100  dark:border-neutral-800 border bg-white dark:bg-neutral-950  w-full">
           <View className="w-[90px] h-[100px] rounded-xl  relative  ">
             <Image

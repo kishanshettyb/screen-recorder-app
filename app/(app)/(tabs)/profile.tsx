@@ -9,7 +9,7 @@ const Profile: FunctionComponent = () => {
       <View className="bg-neutral-900 h-[200px] w-full"></View>
       <View className="flex items-center">
         <Image
-          source={require("../../assets/images/profile.jpg")}
+          source={require("../../../assets/images/profile.jpg")}
           className="w-[150px] h-[150px] rounded-full border-4 shadow-2xl -mt-20  border-slate-50"
         />
         <Text className="text-3xl font-bold mt-4">John Williams</Text>
